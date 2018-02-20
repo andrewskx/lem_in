@@ -16,15 +16,21 @@ t_node *lem_in_getNodeByName(t_farm *farm, char *nodeName)
 
 void	lem_in_getNewPath(t_farm *farm, int index)
 {
-	int *arr;
+//	int *arr;
+
 	farm->path_by_id[index] = -1;
 //	for (int i = 0; i < index; i++)
 //		printf("%s -> ", lem_in_getNameById(farm, farm->path_by_id[i]));
 //	printf("\n");
-	ft_lstadd(&farm->paths, ft_lstnew((void *)farm->path_by_id, (size_t)farm->room_num));
+//	t_list *new_lst = ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 1) * sizeof(int)));
+	ft_lstadd(&farm->paths,
+		ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 1) * sizeof(int))));
 	//arr = (int *)farm->paths->content;
-	for (int i = 0; arr[i] != -1; i++)
-		printf("%i -> ", (int)farm->paths->content[i]);
+	//`new_lst->content = ft_memcpy(farm->path_by_id, sizeof(int) * 
+//	arr = (int*)new_lst->content;
+	//arr = farm->path_by_id;
+//	for (int i = 0; arr[i] != -1; i++)
+//		printf("%i -> ", arr[i]);
 }
 
 void	lem_in_DFS(t_node *node, int index, t_farm *farm)

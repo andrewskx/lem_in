@@ -220,5 +220,5 @@ void	lem_in_fileValidation(t_farm *farm)
 		lem_in_error("##start not found\n");
 	lem_in_checkCoordinates(farm);
 	farm->path_by_id = (int*)malloc(sizeof(int) * (farm->room_num + 1));
-	ft_bzero(farm->path_by_id, farm->room_num + 1);
+	ft_bzero(farm->path_by_id, (farm->room_num + 1) * sizeof(int));
 }

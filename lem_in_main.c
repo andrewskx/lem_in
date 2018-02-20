@@ -52,10 +52,12 @@ void	lem_in_printPaths(t_farm *farm)
 	{
 		i = 0;
 		arr = (int *)ptr->content;
-		while (arr[i] != -1 || i < farm->room_num)
+		while (arr[i] != -1)
 		{
-			printf("%s -> ", lem_in_getNameById(farm, arr[i]));
+			printf("%s", lem_in_getNameById(farm, arr[i]));
 			i++;
+			if (arr[i] != -1)
+				printf("-");
 		}
 		printf("\n");
 		ptr = ptr->next;
@@ -85,7 +87,7 @@ int	main(void)
 	printf("start_room->%s\nend_room->%s\n", farm.start_room, farm.end_room);
 	lem_in_printFarm(&farm);
 	lem_in_DFS(lem_in_getNodeByName(&farm, farm.start_room), 0, &farm);
-//	lem_in_printPaths(&farm);
+	lem_in_printPaths(&farm);
 	if (!farm.paths)
 		printf("No paths\n");
 	return (0);
