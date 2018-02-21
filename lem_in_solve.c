@@ -23,8 +23,9 @@ void	lem_in_getNewPath(t_farm *farm, int index)
 //		printf("%s -> ", lem_in_getNameById(farm, farm->path_by_id[i]));
 //	printf("\n");
 //	t_list *new_lst = ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 1) * sizeof(int)));
+	farm->path_by_id[farm->room_num + 1] = index;
 	ft_lstadd(&farm->paths,
-		ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 1) * sizeof(int))));
+		ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 2) * sizeof(int))));
 	//arr = (int *)farm->paths->content;
 	//`new_lst->content = ft_memcpy(farm->path_by_id, sizeof(int) * 
 //	arr = (int*)new_lst->content;

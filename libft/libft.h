@@ -22,6 +22,7 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }		t_list;
+void			ft_putnbr_64t(int64_t n);
 int			ft_istabulator(int c);
 int			ft_isChar(char *str, int (*f)(int));
 int			ft_count_words(char **str);

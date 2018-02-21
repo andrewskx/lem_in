@@ -25,6 +25,8 @@ typedef	struct	s_farm
 	t_list		*paths;
 
 }		t_farm;
+void	lem_in_printFirst(t_farm *farm);
+void	lem_in_getShortest(t_farm *farm, int min);
 void	lem_in_error(char const *str);
 void	lem_in_fileValidation(t_farm *farm);
 void	lem_in_deleteList(t_node **head);
