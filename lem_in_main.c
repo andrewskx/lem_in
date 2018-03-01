@@ -5,11 +5,9 @@
 
 void	lem_in_findShortest(t_farm *farm)
 {
-	t_list *new;
 	t_list *ptr;
 	int	*arr;
 	int	min;
-	int	count;
 
 	min = 999999;
 	if (farm->paths)
@@ -21,10 +19,11 @@ void	lem_in_findShortest(t_farm *farm)
 			arr[farm->room_num + 1] < min ? min = arr[farm->room_num + 1] : 0;
 			ptr = ptr->next;
 		}
-	//	ft_putstr("\nShortes length -> ");
-	//	ft_putnbr(min);
-		if (min < farm->room_num)
+		if (min <= farm->room_num)
+		{
+			farm->path_len = min;
 			lem_in_getShortest(farm, min);
+		}
 	}
 }
 
@@ -43,12 +42,14 @@ void	lem_in_getShortest(t_farm *farm, int min)
 		{
 			arr = (int *)ptr->content;
 			if (arr[farm->room_num + 1] == min)
+			{
 				ft_lstadd(&new,
 				ft_lstnew(arr, (size_t)(farm->room_num + 2) * sizeof(int)));
+				farm->path_num += 1;
+			}
 			ptr = ptr->next;
 		}
 	ft_lstdel(&farm->paths, &ft_del_lst);
-//	ft_putstr("Check\n");
 	farm->paths = new;
 	}
 }
@@ -154,6 +155,7 @@ void	lem_in_init(t_farm *farm)
 	farm->start_room = 0;
 	farm->end_room = 0;
 	farm->graph = 0;
+	farm->path_num = 0;
 	farm->paths = 0;
 	farm->path_by_id = 0;
 }
@@ -161,18 +163,20 @@ void	lem_in_init(t_farm *farm)
 int	main(void)
 {
 	t_farm farm;
+	t_print	print;
 
 	lem_in_init(&farm);
 	lem_in_fileValidation(&farm);
-//	printf("ants -> %lld\nrooms -> %i\n", farm.ant_num, farm.room_num);
-//	printf("start_room->%s\nend_room->%s\n", farm.start_room, farm.end_room);
-	lem_in_printFarm(&farm);
+//	lem_in_printFarm(&farm);
 	lem_in_DFS(lem_in_getNodeByName(&farm, farm.start_room), 0, &farm);
-//	lem_in_printPaths(&farm);
-	if (!farm.paths)
-		printf("No paths\n");
 	lem_in_findShortest(&farm);
-	ft_putchar('\n');
-	lem_in_printPaths(&farm);
+	if (!farm.path_num)
+	{
+		ft_putstr("No paths\n");
+		return (0);
+	}
+	lem_in_printFarm(&farm);
+//	lem_in_printPaths(&farm);
+        lem_in_print(&farm, &print);
 	return (0);
 }

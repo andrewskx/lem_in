@@ -3,6 +3,14 @@
 
 #include "libft/libft.h"
 #include <stdio.h>
+
+typedef	struct	s_ant
+{
+	int	pos;
+	int	num;
+	int	path_num;
+}		t_ant;
+
 typedef	struct	s_node
 {
 	int	coord_x;
@@ -18,6 +26,8 @@ typedef	struct	s_farm
 {
 	int64_t		ant_num;
 	int		room_num;
+	int		path_num;
+	int		path_len;
 	int		*path_by_id;
 	char		*start_room;
 	char		*end_room;
@@ -25,6 +35,18 @@ typedef	struct	s_farm
 	t_list		*paths;
 
 }		t_farm;
+
+typedef	struct	s_print
+{
+	t_ant	*ant;
+	int	**paths;
+	int	**paths_id;
+}		t_print;
+void	lem_in_move(t_farm *farm, int ant, t_print *print, int j);
+void	lem_in_alloc(t_farm *farm, t_print *print, int ant);
+void	lem_in_pathArr(t_farm *farm, t_print *print);
+void	lem_in_fillAnts(t_farm *farm, t_print *print, int ant, int path_num);
+void	lem_in_print(t_farm *farm, t_print *print);
 void	lem_in_printFirst(t_farm *farm);
 void	lem_in_getShortest(t_farm *farm, int min);
 void	lem_in_error(char const *str);
