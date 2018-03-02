@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in_solve.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anboscan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/02 18:52:28 by anboscan          #+#    #+#             */
+/*   Updated: 2018/03/02 19:22:47 by anboscan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-t_node *lem_in_getNodeByName(t_farm *farm, char *nodeName)
+t_node	*lem_in_getNodeByName(t_farm *farm, char *nodeName)
 {
 	t_node *ptr;
 
@@ -16,22 +28,10 @@ t_node *lem_in_getNodeByName(t_farm *farm, char *nodeName)
 
 void	lem_in_getNewPath(t_farm *farm, int index)
 {
-//	int *arr;
-
 	farm->path_by_id[index] = -1;
-//	for (int i = 0; i < index; i++)
-//		printf("%s -> ", lem_in_getNameById(farm, farm->path_by_id[i]));
-//	printf("\n");
-//	t_list *new_lst = ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 1) * sizeof(int)));
 	farm->path_by_id[farm->room_num + 1] = index;
 	ft_lstadd(&farm->paths,
-		ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 2) * sizeof(int))));
-	//arr = (int *)farm->paths->content;
-	//`new_lst->content = ft_memcpy(farm->path_by_id, sizeof(int) * 
-//	arr = (int*)new_lst->content;
-	//arr = farm->path_by_id;
-//	for (int i = 0; arr[i] != -1; i++)
-//		printf("%i -> ", arr[i]);
+	ft_lstnew(farm->path_by_id, (size_t)((farm->room_num + 2) * sizeof(int))));
 }
 
 void	lem_in_DFS(t_node *node, int index, t_farm *farm)
@@ -51,7 +51,8 @@ void	lem_in_DFS(t_node *node, int index, t_farm *farm)
 	aux = node->links;
 	while (aux)
 	{
-		lem_in_DFS(lem_in_getNodeByName(farm, (char*)aux->content), index + 1, farm);
+		lem_in_DFS(lem_in_getNodeByName(farm,
+				(char*)aux->content), index + 1, farm);
 		aux = aux->next;
 	}
 	farm->path_by_id[index] = 0;

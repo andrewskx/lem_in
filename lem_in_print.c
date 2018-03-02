@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in_print.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anboscan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/02 19:23:35 by anboscan          #+#    #+#             */
+/*   Updated: 2018/03/02 19:27:17 by anboscan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 void	lem_in_print(t_farm *farm, t_print *print)
@@ -30,8 +42,8 @@ void	lem_in_fillAnts(t_farm *farm, t_print *print, int ant, int path_num)
 
 void	lem_in_pathArr(t_farm *farm, t_print *print)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	t_list	*node;
 
 	i = 0;
@@ -66,39 +78,33 @@ void	lem_in_alloc(t_farm *farm, t_print *print, int ant)
 	}
 }
 
-//void	lem_in_print
-
-void	lem_in_move(t_farm *farm, int ant, t_print *print, int j)
+void	lem_in_move(t_farm *farm, int ant, t_print *p, int j)
 {
 	while (1)
 	{
 		j = 0;
 		while (j < ant)
 		{
-			if (print->paths[print->ant[j].path_num][print->ant[j].pos + 1] == -1)
+			if (p->paths[p->ant[j].path_num][p->ant[j].pos + 1] == -1)
 			{
-			/*	print->paths[print->ant[j].path_num][print->ant[j].pos] = 0;
-				if (print->ant[j].num + ant <= farm->ant_num)
-				{
-					print->ant[j].pos = 0;
-					print->ant[j].num += ant;
-				}
-			*/	if (print->ant[j].num == farm->ant_num && print->paths[print->ant[j].path_num][print->ant[j].pos + 1] == -1)
+				if (p->ant[j].num == farm->ant_num &&
+					p->paths[p->ant[j].path_num][p->ant[j].pos + 1] == -1)
 					return ;
-				print->paths[print->ant[j].path_num][print->ant[j].pos] = 0;
-				print->ant[j].pos = 0;
-				print->ant[j].num += ant;
+				p->paths[p->ant[j].path_num][p->ant[j].pos] = 0;
+				p->ant[j].pos = 0;
+				p->ant[j].num += ant;
 			}
-			else if (print->paths[print->ant[j].path_num][print->ant[j].pos + 1] == 0)
+			else if (p->paths[p->ant[j].path_num][p->ant[j].pos + 1] == 0)
 			{
 				ft_putstr("L");
-				ft_putnbr_64t(print->ant[j].num);
+				ft_putnbr_64t(p->ant[j].num);
 				ft_putstr("-");
-				ft_putstr(lem_in_getNameById(farm, print->paths_id[print->ant[j].path_num][print->ant[j].pos + 1]));
+				ft_putstr(lem_in_getNameById(farm,
+						p->paths_id[p->ant[j].path_num][p->ant[j].pos + 1]));
 				ft_putstr(" ");
-				print->paths[print->ant[j].path_num][print->ant[j].pos] = 0;
-				print->paths[print->ant[j].path_num][print->ant[j].pos + 1] = 1;
-				print->ant[j].pos += 1;
+				p->paths[p->ant[j].path_num][p->ant[j].pos] = 0;
+				p->paths[p->ant[j].path_num][p->ant[j].pos + 1] = 1;
+				p->ant[j].pos += 1;
 			}
 			j++;
 		}

@@ -1,5 +1,16 @@
-#include "lem_in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in_validation.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anboscan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/02 18:59:49 by anboscan          #+#    #+#             */
+/*   Updated: 2018/03/02 19:14:35 by anboscan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "lem_in.h"
 
 /*=========  Validation =========
   - No empty lines
@@ -10,7 +21,7 @@
   - 2 rooms can't have same coordinates
   - end room has to have path
   - every room should have at least 1 link
- */
+*/
 
 void	lem_in_getAntNumber(t_farm *farm)
 {
@@ -23,7 +34,7 @@ void	lem_in_getAntNumber(t_farm *farm)
 		lem_in_error("Wrong Number Of Ants\n");
 }
 
-int	lem_in_isAComment(char *line_to_check)
+int		lem_in_isAComment(char *line_to_check)
 {
 	if (ft_strlen(line_to_check) > 1)
 		if (line_to_check[0] == '#' && line_to_check[1] != '#')
@@ -48,7 +59,7 @@ t_node	*lem_in_ifRoomExists(t_farm *farm, char *nodeName)
 	return (0);
 }
 
-int	lem_in_ifLinkExists(t_node *node, char *linkName)
+int		lem_in_ifLinkExists(t_node *node, char *linkName)
 {
 	t_list	*link;
 
@@ -57,7 +68,8 @@ int	lem_in_ifLinkExists(t_node *node, char *linkName)
 		link = node->links;
 		while (link)
 		{
-			if (!ft_strcmp((const char *)link->content, (const char *)linkName) && link)
+			if (!ft_strcmp((const char *)link->content,
+						(const char *)linkName) && link)
 				return (1);
 			link = link->next;
 		}
@@ -65,33 +77,33 @@ int	lem_in_ifLinkExists(t_node *node, char *linkName)
 	return (0);
 }
 
-
 void	lem_in_addLink(t_farm *farm, char *line, int *room_link_signal)
 {
-	char **tab;
-	t_node *node;
-	
+	char	**tab;
+	t_node	*node;
+
 	if (*room_link_signal == 0)
-	if ((tab = ft_strsplit(line, '-')))
-	{
-		if ((ft_count_words(tab)) == 2)
+		if ((tab = ft_strsplit(line, '-')))
 		{
-			if ((node = lem_in_ifRoomExists(farm, tab[0])))
+			if ((ft_count_words(tab)) == 2)
 			{
-				if (lem_in_ifLinkExists(node, tab[1]) || !ft_strcmp(tab[1], (const char *)node->name))
-					lem_in_error("Duplicated link Or Pipe to itself\n");
-				ft_lstadd(&node->links, ft_lstnew((void const *)tab[1],
-							ft_strlen((const char*)tab[1])));
+				if ((node = lem_in_ifRoomExists(farm, tab[0])))
+				{
+					if (lem_in_ifLinkExists(node, tab[1]) ||
+							!ft_strcmp(tab[1], (const char *)node->name))
+						lem_in_error("Duplicated link Or Pipe to itself\n");
+					ft_lstadd(&node->links, ft_lstnew((void const *)tab[1],
+								ft_strlen((const char*)tab[1])));
+				}
+				else
+				{
+					ft_free_double_char(tab);
+					lem_in_error("Room does not exist, can not link\n");
+				}
 			}
 			else
-			{
-				ft_free_double_char(tab);
-				lem_in_error("Room does not exist, can not link\n");
-			}
+				lem_in_error("Invalid line\n");
 		}
-		else
-			lem_in_error("Invalid line\n");
-	}
 }
 
 void	lem_in_ifEnd(t_farm *farm, char *line, int *end, int *room_link_signal)
@@ -116,7 +128,7 @@ void	lem_in_ifEnd(t_farm *farm, char *line, int *end, int *room_link_signal)
 	}
 }
 
-void	lem_in_ifStart(t_farm *farm, char *line, int *start, int *room_link_signal)
+void	lem_in_ifStart(t_farm *farm, char *line, int *start, int *room_signal)
 {
 	if (line)
 	{
@@ -128,8 +140,8 @@ void	lem_in_ifStart(t_farm *farm, char *line, int *start, int *room_link_signal)
 				free(line);
 				if (get_next_line(0, &line))
 				{
-				lem_in_addRoom(farm, line, room_link_signal);
-				farm->start_room = ft_strdup(farm->graph->name);
+					lem_in_addRoom(farm, line, room_signal);
+					farm->start_room = ft_strdup(farm->graph->name);
 				}
 			}
 			else
@@ -140,7 +152,7 @@ void	lem_in_ifStart(t_farm *farm, char *line, int *start, int *room_link_signal)
 
 void	lem_in_addRoom(t_farm *farm, char *line, int *room_link_signal)
 {
-	char **tab;
+	char	**tab;
 	t_node	*ptr;
 
 	if ((tab = ft_strsplit(line, ' ')))
@@ -149,10 +161,11 @@ void	lem_in_addRoom(t_farm *farm, char *line, int *room_link_signal)
 		{
 			if (!(ptr = lem_in_ifRoomExists(farm, tab[0])))
 			{
-				if (ft_isChar(tab[1], &ft_isdigit) && ft_isChar(tab[2], &ft_isdigit))
+				if (ft_isChar(tab[1], &ft_isdigit) &&
+						ft_isChar(tab[2], &ft_isdigit))
 				{
 					lem_in_addToList(&farm->graph, lem_in_newNode(tab[0],
-								ft_atoi(tab[1]), ft_atoi(tab[2]), farm->room_num));
+							ft_atoi(tab[1]), ft_atoi(tab[2]), farm->room_num));
 					*room_link_signal = 1;
 					(farm->room_num)++;
 				}
@@ -177,13 +190,14 @@ void	lem_in_checkCoordinates(t_farm *farm)
 		while (ptr)
 		{
 			aux = farm->graph;
-			if (!ptr->links && ft_strcmp((const char*)ptr->name, farm->end_room))
+			if (!ptr->links &&
+					ft_strcmp((const char*)ptr->name, farm->end_room))
 				lem_in_error("Room has no links\n");
 			while (aux)
 			{
 				if (aux != ptr)
 					if (aux->coord_x == ptr->coord_x
-					&& aux->coord_y == ptr->coord_y)
+							&& aux->coord_y == ptr->coord_y)
 						lem_in_error("Same coordinates\n");
 				aux = aux->next;
 			}
@@ -192,16 +206,12 @@ void	lem_in_checkCoordinates(t_farm *farm)
 	}
 }
 
-void	lem_in_fileValidation(t_farm *farm)
+void	lem_in_fileValidation(t_farm *farm, int start, int end)
 {
 	char	*line;
-	int	start;
-	int	end;
-	int	room_link_signal;
+	int		room_link_signal;
 
 	room_link_signal = 0;
-	start = 0;
-	end = 0;
 	lem_in_getAntNumber(farm);
 	while (get_next_line(0, &line))
 	{

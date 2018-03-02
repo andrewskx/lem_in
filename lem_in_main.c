@@ -1,13 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in_main.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anboscan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/02 19:16:27 by anboscan          #+#    #+#             */
+/*   Updated: 2018/03/02 19:20:05 by anboscan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 #include <stdio.h>
 
-
-
 void	lem_in_findShortest(t_farm *farm)
 {
-	t_list *ptr;
-	int	*arr;
-	int	min;
+	t_list	*ptr;
+	int		*arr;
+	int		min;
 
 	min = 999999;
 	if (farm->paths)
@@ -27,12 +37,11 @@ void	lem_in_findShortest(t_farm *farm)
 	}
 }
 
-
 void	lem_in_getShortest(t_farm *farm, int min)
 {
-	t_list *ptr;
-	t_list *new;
-	int	*arr;
+	t_list	*ptr;
+	t_list	*new;
+	int		*arr;
 
 	new = 0;
 	if (farm->paths)
@@ -49,11 +58,10 @@ void	lem_in_getShortest(t_farm *farm, int min)
 			}
 			ptr = ptr->next;
 		}
-	ft_lstdel(&farm->paths, &ft_del_lst);
-	farm->paths = new;
+		ft_lstdel(&farm->paths, &ft_del_lst);
+		farm->paths = new;
 	}
 }
-
 
 void	lem_in_printFirst(t_farm *farm)
 {
@@ -81,10 +89,9 @@ void	lem_in_printFirst(t_farm *farm)
 	}
 }
 
-			
 void	lem_in_printFarm(t_farm *farm)
 {
-	t_node *node;
+	t_node	*node;
 	t_list	*list;
 
 	lem_in_printFirst(farm);
@@ -126,9 +133,9 @@ char	*lem_in_getNameById(t_farm *farm, int id)
 
 void	lem_in_printPaths(t_farm *farm)
 {
-	t_list *ptr;
-	int 	i;
-	int	*arr;
+	t_list	*ptr;
+	int		i;
+	int		*arr;
 
 	ptr = farm->paths;
 	while (ptr)
@@ -141,12 +148,10 @@ void	lem_in_printPaths(t_farm *farm)
 			i++;
 			arr[i] != -1 ? ft_putchar('-') : 0;
 		}
-		printf("\n");
+		ft_putstr("\n");
 		ptr = ptr->next;
 	}
 }
-
-
 
 void	lem_in_init(t_farm *farm)
 {
@@ -160,14 +165,13 @@ void	lem_in_init(t_farm *farm)
 	farm->path_by_id = 0;
 }
 
-int	main(void)
+int		main(void)
 {
-	t_farm farm;
+	t_farm	farm;
 	t_print	print;
 
 	lem_in_init(&farm);
-	lem_in_fileValidation(&farm);
-//	lem_in_printFarm(&farm);
+	lem_in_fileValidation(&farm, 0, 0);
 	lem_in_DFS(lem_in_getNodeByName(&farm, farm.start_room), 0, &farm);
 	lem_in_findShortest(&farm);
 	if (!farm.path_num)
@@ -176,7 +180,6 @@ int	main(void)
 		return (0);
 	}
 	lem_in_printFarm(&farm);
-//	lem_in_printPaths(&farm);
-        lem_in_print(&farm, &print);
+	lem_in_print(&farm, &print);
 	return (0);
 }
